@@ -1,0 +1,53 @@
+<div class="link-container">
+    <div (click)="toggle()" class="content__title">
+        {{ visible ? 'hide' : 'show' }}
+    </div>
+    <div class="link-header">
+        <div class="link-total">0 Total Links</div>
+        <div class="link-related">1 Realted Items</div>
+        <div class="link-blockers">4 Blockers</div>
+        <div class="link-depends">0 Dependecies</div>
+    </div>
+    <br/>
+    <div [hidden]="!visible" class="link-content">
+        <div class="link-relation-wrapper">
+            <div class="link-relation">
+                <select [ngModel]="selectedRelation" (ngModelChange)="onSelectRelation($event)">
+                    <option *ngFor="let linkType of linkTypes" [value]="linkType.id">{{linkType.attributes['forward_name']}}</option>
+                </select>
+            </div>
+            <span class="link-relationText"> to,item</span>
+        </div>
+        <br/>
+        <br/>
+        <div class="link-relation-wrapper">
+            <div class="link-items">
+                 <input 
+                    ng2-auto-complete
+                    [(ngModel)]="selectedItem"
+                    [source]="items" 
+                    [list-formatter]="renderResults"
+                    (ngModelChange)="onSelectItem($event)"
+                    placeholder="enter text"/> 
+            </div>
+            <input type="button" value="Link" class="link-submit" (click)="createLink($event)"/>
+        </div>
+    </div>
+    <div>
+     <div class="link-list-header">Links</div>
+     <div class="link-list-container">
+        <div class="link-list-group">
+            <div class="link-list-group-header">Header1</div>
+            <div class="link-list-group-items">
+                <div>Hello World</div>
+            </div>
+        </div>
+        <div class="link-list-group">
+            <div class="link-list-group-header">Header2</div>
+            <div class="link-list-group-items">
+                <div>Hello World</div>
+            </div>
+        </div>
+     </div>
+    </div>
+</div>

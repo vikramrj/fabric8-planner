@@ -327,6 +327,89 @@ export class InMemoryDataService implements InMemoryDbService {
       'imageURL': 'https://avatars.githubusercontent.com/u/2410474?v=3'
     };
 
-    return {loginStatus, workitems, workitemtypes, user};
+    let linkCategories = {
+      "meta": { "comment": "Note, that the 'id' field is optional for a create request." },
+      "id": "1",
+      "type": "linkcategories",
+      "attributes": {
+        "name": "test",
+        "title": "This category is reserved for link types that belong to the 'test' subsystem."
+      }
+    }
+
+    let linkTypes = [
+      {
+        "type": "linktypes",
+        "id": "1",
+        "attributes": {
+          "name": "tested-by-link-type",
+          "description": "A test work item can 'test' if a the code in a pull request passes the tests.",
+          "source_type": "test-workitemtype",
+          "target_type": "pull-request-workitemttype",
+          "forward_name": "tests",
+          "reverse_name": "tested by"
+        },
+        "relationships": {
+          "link_category": {
+            "meta": { "comment": "See the creation of link categories for what this ID means" },
+            "data": { "type": "link_category", "id": "6c5610be-30b2-4880-9fec-81e4f8e4fd76" },
+            "links": {
+              "self": "http://example.com/api/linktypes/40bbdd3d-8b5d-4fd6-ac90-7236b669af04/relationships/link_category",
+              "related": "http://example.com/api/linktypes/40bbdd3d-8b5d-4fd6-ac90-7236b669af04/link_category"
+            }
+          }
+        },
+        "links": {
+          "self": "http://example.com/api/linktypes/40bbdd3d-8b5d-4fd6-ac90-7236b669af04"
+        }
+      },
+      {
+        "type": "linktypes",
+        "id": "2",
+        "attributes": {
+          "name": "tested-by-link-type",
+          "description": "A test work item can 'test' if a the code in a pull request passes the tests.",
+          "source_type": "test-workitemtype",
+          "target_type": "pull-request-workitemttype",
+          "forward_name": "tests1",
+          "reverse_name": "tested by"
+        },
+        "relationships": {
+          "link_category": {
+            "meta": { "comment": "See the creation of link categories for what this ID means" },
+            "data": { "type": "link_category", "id": "6c5610be-30b2-4880-9fec-81e4f8e4fd76" },
+            "links": {
+              "self": "http://example.com/api/linktypes/40bbdd3d-8b5d-4fd6-ac90-7236b669af04/relationships/link_category",
+              "related": "http://example.com/api/linktypes/40bbdd3d-8b5d-4fd6-ac90-7236b669af04/link_category"
+            }
+          }
+        },
+        "links": {
+          "self": "http://example.com/api/linktypes/40bbdd3d-8b5d-4fd6-ac90-7236b669af04"
+        }
+      }
+    ];
+
+    let link = {
+      "meta": { "comment": "Note, that the 'id' field is optional for a create request." },
+      "id": "40bbdd3d-8b5d-4fd6-ac90-7236b669af04",
+      "type": "linktypes",
+      "attributes": {
+        "name": "tested-by-link-type",
+        "description": "A test work item can 'test' if a the code in a pull request passes the tests.",
+        "source_type": "test-workitemtype",
+        "target_type": "pull-request-workitemttype",
+        "forward_name": "tests",
+        "reverse_name": "tested by"
+      },
+      "relationships": {
+        "link_category": {
+          "meta": { "comment": "See the creation of link categories for what this ID means" },
+          "data": { "type": "link_category", "id": "6c5610be-30b2-4880-9fec-81e4f8e4fd76" }
+        }
+      }
+    }
+
+    return {loginStatus, workitems, workitemtypes, user, linkCategories, linkTypes, link};
   }
 }
