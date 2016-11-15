@@ -2,7 +2,7 @@ import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
 import { FormsModule }        from '@angular/forms';
 import { DropdownModule }     from 'ng2-dropdown';
-import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { Ng2CompleterModule } from "ng2-completer";
 
 import { AlmIconModule }      from './../../../shared-component/icon/almicon.module';
 import { AlmEditableModule }     from './../../../shared-component/editable/almeditable.module';
@@ -19,7 +19,7 @@ import { AlmTrim } from './../../../pipes/alm-trim';
      CommonModule,
      DropdownModule,
      FormsModule,
-     Ng2AutoCompleteModule
+     Ng2CompleterModule
   ],
   declarations: [ WorkItemDetailComponent, AlmTrim, WorkItemLinkComponent ],
   exports:      [ WorkItemDetailComponent ],

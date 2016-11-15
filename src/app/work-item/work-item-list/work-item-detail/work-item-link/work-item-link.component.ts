@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Http } from "@angular/http";
 import { LinkType } from '../../../../models/link-type';
 import { Link } from '../../../../models/link';
 import { WorkItemLinkService } from './work-item-link.service';
 import { WorkItem } from '../../../work-item';
-
+import { SearchData } from './search-data';
 @Component({
     selector: 'alm-work-item-link',
     templateUrl: './work-item-link.component.html',
@@ -15,9 +16,13 @@ export class WorkItemLinkComponent implements OnInit {
     link: Link;
     selectedItem: Object;
     selectedLink: string;
+    searchSource : SearchData;
     constructor (
         private WorkItemLinkService: WorkItemLinkService,
-    ){}
+        http: Http
+    ){
+        this.searchSource = new SearchData(http);
+    }
     public items:Array<Object> = [
         {
             id: '1',
