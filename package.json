@@ -85,6 +85,7 @@
     "@angular/router": "4.0.1",
     "angular2-tree-component": "2.7.0",
     "core-js": "2.4.1",
+    "dom-autoscroller": "2.3.3",
     "less-plugin-autoprefix": "1.5.1",
     "lodash": "4.17.4",
     "moment": "2.18.1",

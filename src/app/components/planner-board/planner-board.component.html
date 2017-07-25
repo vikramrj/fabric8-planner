@@ -19,14 +19,14 @@
             (touchmove)="onTouchstart($event);">
             <!-- board columns -->
             <div class="board-lane"
-              *ngFor='let lane of lanes'>
+              *ngFor='let lane of lanes; let index = index;'>
               <section class="width-100 pull-left board-lane-column"
                 [attr.data-state]="lane.option">
                 <div class="lane-header">
                   <span class="dib">{{lane.option}}</span>
                   <span class="issueCount dib" >{{lane.workItems | arrayCount}}</span>
                 </div>
-                <div class="boardlaneWrapper"
+                <div class="boardlaneWrapper" [attr.id]="(lane.option+index).replace(' ', '')"
                   almInfiniteScroll
                   [eachElementHeightInPx]='contentItemHeight'
                   (initItems)='initWiItems($event, lane)'

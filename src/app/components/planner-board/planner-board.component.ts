@@ -38,6 +38,7 @@ import { WorkItemType } from '../../models/work-item-type';
 import { WorkItemService } from '../../services/work-item.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { CollaboratorService } from '../../services/collaborator.service';
+import * as autoScroll from 'dom-autoscroller';
 
 @Component({
   // tslint:disable-next-line:use-host-property-decorator
@@ -152,6 +153,30 @@ export class PlannerBoardComponent implements OnInit, OnDestroy {
         this.workItemTypes = [];
       }
     });
+
+    setTimeout(() => {
+      let newLane = document.getElementById('new0');
+      let openLane = document.getElementById('open1');
+      let inProgressLane = document.getElementById('inprogress2');
+      let resolvedLane = document.getElementById('resolved3');
+      let closedLane = document.getElementById('closed4');
+      let scroll = autoScroll([
+        newLane,
+        openLane,
+        inProgressLane,
+        resolvedLane,
+        closedLane
+      ],{
+        margin: 20,
+        maxSpeed: 5,
+        scrollWhenOutside: false,
+        autoScroll: function(){
+          //Only scroll when the pointer is down.
+          return this.down;
+        }
+      });
+    }, 3000);
+
   }
 
   ngOnDestroy() {
