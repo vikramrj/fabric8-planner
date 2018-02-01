@@ -587,6 +587,4 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
   }
-
-
 }
