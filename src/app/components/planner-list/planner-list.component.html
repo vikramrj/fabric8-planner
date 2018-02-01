@@ -154,10 +154,16 @@
           [treeToRelation]="'id'"
           [selected]="selectedRows"
           [selectionType]="'single'"
+          [dragulaName]="'bag'"
+          [dragulaModel]="datatableWorkitems2"
+          [dragulaVScroll]="true"
+          [classSelector]=""
           (select)="onSelect($event)"
           (scroll)="onScroll($event)"
           (reorder)="handleReorder($event)"
-          (treeAction)="onTreeAction($event)">
+          (treeAction)="onTreeAction($event)"
+          (directiveDrop)="onDrop($event)"
+          (directiveDrag)="onDrag($event)">
           <!-- First Column - quick Add - row detail -->
           <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow (toggle)="onDetailToggle($event)">
             <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>

@@ -53,6 +53,7 @@ import { LabelService } from '../../services/label.service';
 import { AssigneesModule } from './../assignee/assignee.module';
 import { WorkItemCellComponent } from '../work-item-cell/work-item-cell.component';
 import { CookieService } from '../../services/cookie.service';
+import { DragulaExtendedDirective } from './ngx-datatable-dnd.directive';
 
 let providers = [];
 
@@ -127,10 +128,11 @@ if (process.env.ENV == 'inmemory') {
   declarations: [
     PlannerListComponent,
     WorkItemCellComponent,
-    FilterColumn
+    FilterColumn,
+    DragulaExtendedDirective
   ],
   providers: providers,
-  exports: [ PlannerListComponent ]
+  exports: [ PlannerListComponent, DragulaExtendedDirective ]
 })
 export class PlannerListModule {
   constructor(http: Http) {}

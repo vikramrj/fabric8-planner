@@ -92,6 +92,8 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
   detailExpandedRows: any = [];
   expanded: any = {};
   datatableWorkitems: any[] = [];
+  datatableWorkitems2: any[] = [];
+  renderTable = true;
   columns: any[];
   isTableConfigOpen: boolean = false;
   emptyStateConfig: any = {};
@@ -511,6 +513,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           ...this.tableWorkitem(this.workItems, null, true),
           ...this.tableWorkitem(this.included, null, false)
         ];
+        this.datatableWorkitems2 = this.datatableWorkitems;
         this.workItems = [...this.workItems, ...this.included];
         this.workItemDataService.setItems(this.workItems);
         // Resolve assignees
@@ -526,6 +529,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               // After the assignees is resolved
               // We should add it to the datatableWorkitems
               this.datatableWorkitems[index].assignees = assignees;
+              this.datatableWorkitems2 = this.datatableWorkitems;
               if (index == this.workItems.length - 1) {
                 const t4 = performance.now();
                 console.log('Performance :: Resolved all the users - ' + (t4 - t3) + ' milliseconds.');
@@ -559,6 +563,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
                   // After the assignees is resolved
                   // We should add it to the datatableWorkitems
                   this.datatableWorkitems[index].creator = creator;
+                  this.datatableWorkitems2 = this.datatableWorkitems;
                   return true;
                 } else {
                   return false;
@@ -614,6 +619,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           ...this.tableWorkitem(newItems, null, true),
           ...this.tableWorkitem(newIncluded, null, false)
         ];
+        this.datatableWorkitems2 = this.datatableWorkitems;
         this.workItems = [
           ...this.workItems,
           ...newItems,
@@ -630,6 +636,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               // After the assignees is resolved
               // We should add it to the datatableWorkitems
               this.datatableWorkitems[i].assignees = assignees;
+              this.datatableWorkitems2 = this.datatableWorkitems;
               if (i == this.workItems.length - 1) {
                 const t4 = performance.now();
                 console.log('Performance :: Resolved all the users - ' + (t4 - t3) + ' milliseconds.');
@@ -662,6 +669,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
                   // After the assignees is resolved
                   // We should add it to the datatableWorkitems
                   this.datatableWorkitems[wiLength + index].creator = creator;
+                  this.datatableWorkitems2 = this.datatableWorkitems;
                   return true;
                 } else {
                   return false;
@@ -705,6 +713,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
           ...this.datatableWorkitems,
           ...this.tableWorkitem(childrenItems, workItem.id)
         ];
+        this.datatableWorkitems2 = this.datatableWorkitems;
         return workItems;
       })
       .map((workItems: WorkItem[]) => {
@@ -741,6 +750,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
                   // After the assignees is resolved
                   // We should add it to the datatableWorkitems
                   this.datatableWorkitems[values.startIndex + index].creator = creator;
+                  this.datatableWorkitems2 = this.datatableWorkitems;
                   return true;
                 } else {
                   return false;
@@ -776,6 +786,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               });
               this.datatableWorkitems[values.startIndex + index].assignees =
                 item.relationships.assignees.data;
+              this.datatableWorkitems2 = this.datatableWorkitems;
             });
           })
 
@@ -817,6 +828,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       ...this.tableWorkitem([this.workItems[0]]),
       ...this.datatableWorkitems
     ];
+    this.datatableWorkitems2 = this.datatableWorkitems;
     this.workItemDataService.setItems([this.workItems[0]]);
   }
 
@@ -835,6 +847,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
         this.workItems[0].attributes['version'] = updatedWorkItem.attributes['version'];
         // Update datatable WorkItems
         this.datatableWorkitems = [...this.tableWorkitem([this.workItems[0]]), ...this.datatableWorkitems];
+        this.datatableWorkitems2 = this.datatableWorkitems;
       });
     });
   }
@@ -1022,6 +1035,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               updatedTableItem,
               ...this.datatableWorkitems.slice(index + 1)
             ];
+            this.datatableWorkitems2 = this.datatableWorkitems;
           } else {
             //Scenario: work item detail panel is open.
             //Change a value so that it does not match the applied filter and gets removed from the list
@@ -1033,6 +1047,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
               // If the item is not a child of any other item
               this.workItems.splice(0, 0, updatedItem);
               this.datatableWorkitems = [...this.tableWorkitem([updatedItem]), ...this.datatableWorkitems];
+              this.datatableWorkitems2 = this.datatableWorkitems;
             }
           }
           try {
@@ -1291,6 +1306,7 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     this.sidePanelRef.toggleSidePanel();
     setTimeout(() => {
     this.datatableWorkitems = [...this.datatableWorkitems];
+    this.datatableWorkitems2 = this.datatableWorkitems;
     }, 500);
   }
 
@@ -1334,10 +1350,12 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
       } else {
         this.datatableWorkitems[index].treeStatus = 'expanded';
         this.datatableWorkitems = [...this.datatableWorkitems];
+        this.datatableWorkitems2 = this.datatableWorkitems;
       }
     } else {
       this.datatableWorkitems[index].treeStatus = 'collapsed';
       this.datatableWorkitems = [...this.datatableWorkitems];
+      this.datatableWorkitems2 = this.datatableWorkitems;
     }
   }
 
@@ -1349,5 +1367,21 @@ export class PlannerListComponent implements OnInit, AfterViewChecked, OnDestroy
     } else {
       return [];
     }
+  }
+
+  onDrop(event){
+    let newData = event.slice();
+    this.datatableWorkitems = newData;
+
+    this.renderTable = false;
+
+    setTimeout(() => {
+      this.datatableWorkitems2 = [...this.datatableWorkitems];
+      this.renderTable = true;
+    }, 0);
+  }
+
+  onDrag(event) {
+    console.log('DRAG event::', event);
   }
 }
