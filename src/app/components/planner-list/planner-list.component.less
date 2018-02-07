@@ -41,6 +41,23 @@
     width: 100%;
     height: 100%;
     background-color: @color-pf-white;
+      ::-webkit-scrollbar {
+        -webkit-appearance: none;
+      }
+      ::-webkit-scrollbar:horizontal {
+        height: 8px;
+      }
+      ::-webkit-scrollbar:vertical {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: rgba(0, 0, 0, .5);
+      }
+      ::-webkit-scrollbar-track { 
+        background-color: rgba(0, 0, 0, .1); 
+        border-radius: 8px; 
+      }
     &-wrap {
       position: relative;
       width: 100%;
@@ -308,4 +325,4 @@ a.quick-add-icon {
 .icon-loader {
   margin-left: -4px;
   margin-right: 6px;
-}
+} 
