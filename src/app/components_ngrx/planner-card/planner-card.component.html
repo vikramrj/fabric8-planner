@@ -1,4 +1,4 @@
-<div class="f8-custom-card" (click)="cardClick(workItem, $event);">
+<div class="f8-custom-card" (click)="cardClick(workItem, $event);" [attr.data-id]="workItem.id">
   <pfng-card [config]="config" [headerTemplate]="cardHeader">
     <ng-template #cardHeader>
       <div class="f8-custom-card-header">
@@ -6,8 +6,8 @@
           <span class="fa fa-bullseye"></span>
         </div>
         <div class="title-wrapper" (click)="titleClick(workItem, $event);">
-          <span>#2583: </span>
-          <strong>A development platform should provide as application</strong>
+          <span>#{{ workItem?.number }}: </span>
+          <strong>{{ workItem?.title }}</strong>
           <span class="creator"> - created by viraj</span>
         </div>
       </div>
@@ -15,8 +15,8 @@
     <div class="f8-custom-card-body">
       <div class="sprint-name truncate"
         [placement]="top"
-        [tooltip]="'Sprint #151 Sprint #151 Sprint #151'">
-        <span>Sprint #151 Sprint #151 Sprint #151 Sprint #151 Sprint #151</span>
+        [tooltip]="workItem?.iteration">
+        <span>{{ workItem?.iteration }}</span>
       </div>
       <div class="assignee">
         <user-avatar

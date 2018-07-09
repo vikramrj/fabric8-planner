@@ -1,9 +1,12 @@
 <div class="f8-board-column">
   <div class="f8-board-column__header">
-    <span class="badge">42 </span>
-    <span class="f8-board-column__header-title">Open</span>
+    <span class="badge">{{ column.count }} </span>
+    <span class="f8-board-column__header-title">{{ column.name }}</span>
   </div>
-  <div class="f8-board-column__body">
-      <f8-planner-card></f8-planner-card>
+  <div class="f8-board-column__body"
+    [dragula]='"board-column"'
+    [dragulaModel]="column.workItems"
+    [attr.data-id]="column.id">
+    <f8-planner-card *ngFor="let workitem of column.workItems" [workItem]="workitem"></f8-planner-card>
   </div>
 </div>
