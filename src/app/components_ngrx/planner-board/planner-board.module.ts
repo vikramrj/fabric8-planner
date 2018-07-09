@@ -2,6 +2,18 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap';
 
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { BoardEffects } from '../../effects/board.effect';
+import {
+  BoardReducer,
+  ColumnWorkItemReducer
+} from '../../reducers/index.reducer';
+import { BoardService } from '../../services/board.service';
+import {
+  InitialBoardState,
+  InitialColumnWorkItemState
+} from './../../states/index.state';
 import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { PlannerBoardColumnModule } from './../planner-board-column/planner-board-column.module';
 import { SidepanelModule } from './../side-panel/side-panel.module';
@@ -21,33 +33,43 @@ import { WorkItemQuery } from './../../models/work-item';
 import { F8SortByPipeModule } from './../../pipes/sort-by.module';
 
 @NgModule({
-    providers: [
-        TooltipConfig,
-
-        CommentQuery,
-        UserQuery,
-        LabelQuery,
-        IterationQuery,
-        WorkItemQuery,
-        AreaQuery,
-        SpaceQuery,
-        GroupTypeQuery
-    ],
-    imports: [
-        CommonModule,
-        F8SortByPipeModule,
-        PlannerBoardRoutingModule,
-        PlannerBoardColumnModule,
-        PlannerLayoutModule,
-        WorkItemPreviewPanelModule,
-        SidepanelModule,
-        TooltipModule.forRoot()
-    ],
-    declarations: [
-        PlannerBoardComponent
-    ],
-    exports: [
-        PlannerBoardComponent
-    ]
+  providers: [
+    TooltipConfig,
+    BoardService,
+    CommentQuery,
+    UserQuery,
+    LabelQuery,
+    IterationQuery,
+    WorkItemQuery,
+    AreaQuery,
+    SpaceQuery,
+    GroupTypeQuery
+  ],
+  imports: [
+    CommonModule,
+    F8SortByPipeModule,
+    PlannerBoardRoutingModule,
+    PlannerBoardColumnModule,
+    PlannerLayoutModule,
+    WorkItemPreviewPanelModule,
+    SidepanelModule,
+    TooltipModule.forRoot(),
+    StoreModule.forFeature(
+      'boardView',
+      {
+        boards: BoardReducer,
+        columnWorkItem: ColumnWorkItemReducer
+      },
+      {
+        initialState: {
+          boards: InitialBoardState,
+          columnWorkItem: InitialColumnWorkItemState
+        }
+      }
+    ),
+    EffectsModule.forFeature([BoardEffects])
+  ],
+  declarations: [PlannerBoardComponent],
+  exports: [PlannerBoardComponent]
 })
 export class PlannerBoardModule {}

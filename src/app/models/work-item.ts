@@ -16,7 +16,7 @@ import { cloneDeep, orderBy } from 'lodash';
 import { Observable } from 'rxjs';
 import { AppState, PlannerState } from './../states/app.state';
 import {
-  AreaMapper, AreaModel,
+  AreaModel,
   AreaQuery, AreaUI
 } from './area.model';
 import { Comment, CommentUI } from './comment';
@@ -29,16 +29,17 @@ import {
   switchModel
 } from './common.model';
 import {
-  IterationMapper, IterationModel,
+  IterationModel,
   IterationQuery, IterationUI
 } from './iteration.model';
 import {
-   LabelMapper, LabelModel,
+   LabelMapper,
+   LabelModel,
    LabelQuery, LabelUI
 } from './label.model';
 import { Link } from './link';
 import { plannerSelector } from './space';
-import { UserMapper, UserQuery, UserService, UserUI } from './user';
+import { UserQuery, UserService, UserUI } from './user';
 import {
   WorkItemType,
   WorkItemTypeMapper,
@@ -173,6 +174,10 @@ export interface WorkItemUI {
   parentID: string;
   link: string;
   WILinkUrl: string;
+  columnsId?: {        // Columns all the board columns id
+    id: string,
+    type: string
+  }[];
 
   treeStatus: 'collapsed' | 'expanded' | 'disabled' | 'loading'; // collapsed
   childrenLoaded: boolean; // false
@@ -194,12 +199,8 @@ const {
 } = workItemAdapter.getSelectors();
 
 export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
-  itMapper = new IterationMapper();
   wiTypeMapper = new WorkItemTypeMapper();
-  areaMapper = new AreaMapper();
-  userMapper = new UserMapper();
   labelMapper = new LabelMapper();
-
   serviceToUiMapTree: MapTree = [{
       fromPath: ['id'],
       toPath: ['id']
@@ -303,6 +304,9 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     }, {
       toPath: ['editable'],
       toValue: false
+    }, {
+      fromPath: ['relationships', 'system.boardcolumns', 'data'],
+      toPath: ['columnsId']
     }
 
   ];
@@ -629,5 +633,13 @@ export class WorkItemQuery {
 
   get getWorkItemEntities(): Observable<{[id: string]: WorkItemUI}> {
     return this.store.select(workItemEntities);
+  }
+
+  getWorkItemsWithIds(ids: string[]): Store<WorkItemUI[]> {
+    const selector = createSelector(
+      workItemEntities,
+      state => ids.map(i => this.resolveWorkItem(state[i]))
+    );
+    return this.store.select(selector);
   }
 }
