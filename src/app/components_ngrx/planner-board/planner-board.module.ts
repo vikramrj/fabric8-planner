@@ -23,6 +23,7 @@ import { PlannerBoardComponent } from './planner-board.component';
 
 // Data Querries
 import { AreaQuery } from '../../models/area.model';
+import { BoardQuery, ColumnWorkItemQuery } from '../../models/board.model';
 import { GroupTypeQuery } from '../../models/group-types.model';
 import { IterationQuery } from '../../models/iteration.model';
 import { LabelQuery } from '../../models/label.model';
@@ -43,7 +44,9 @@ import { F8SortByPipeModule } from './../../pipes/sort-by.module';
     WorkItemQuery,
     AreaQuery,
     SpaceQuery,
-    GroupTypeQuery
+    GroupTypeQuery,
+    BoardQuery,
+    ColumnWorkItemQuery
   ],
   imports: [
     CommonModule,
