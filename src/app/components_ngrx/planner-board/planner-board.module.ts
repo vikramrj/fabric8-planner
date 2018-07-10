@@ -4,12 +4,14 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap';
 
 import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { PlannerBoardColumnModule } from './../planner-board-column/planner-board-column.module';
+import { PlannerCardModule } from './../planner-card/planner-card.module';
 import { SidepanelModule } from './../side-panel/side-panel.module';
 import { WorkItemPreviewPanelModule } from './../work-item-preview-panel/work-item-preview-panel.module';
 import { PlannerBoardRoutingModule } from './planner-board-routing.module';
 import { PlannerBoardComponent } from './planner-board.component';
 
 // Data Querries
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { AreaQuery } from '../../models/area.model';
 import { GroupTypeQuery } from '../../models/group-types.model';
 import { IterationQuery } from '../../models/iteration.model';
@@ -24,6 +26,7 @@ import { WorkItemQuery } from './../../models/work-item';
         TooltipConfig,
 
         CommentQuery,
+        DragulaService,
         UserQuery,
         LabelQuery,
         IterationQuery,
@@ -33,7 +36,9 @@ import { WorkItemQuery } from './../../models/work-item';
         GroupTypeQuery
     ],
     imports: [
+        PlannerCardModule,
         CommonModule,
+        DragulaModule,
         PlannerBoardRoutingModule,
         PlannerBoardColumnModule,
         PlannerLayoutModule,

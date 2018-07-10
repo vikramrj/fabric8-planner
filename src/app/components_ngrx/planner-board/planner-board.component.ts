@@ -8,6 +8,8 @@ import {
   ViewChild
 } from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { DragulaService } from 'ng2-dragula';
+import { Subject } from 'rxjs';
 import { GroupTypeQuery, GroupTypeUI } from './../../models/group-types.model';
 import { IterationQuery } from './../../models/iteration.model';
 import { SpaceQuery } from './../../models/space';
@@ -24,15 +26,21 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
     private sidePanelOpen: boolean = true;
     private eventListeners: any[] = [];
     private columns;
+    private destroy$ = new Subject();
 
     constructor(
+      private dragulaService: DragulaService,
       private renderer: Renderer2,
       private spaceQuery: SpaceQuery,
       private groupTypeQuery: GroupTypeQuery,
       private iterationQuery: IterationQuery,
       private route: ActivatedRoute,
       private router: Router
-    ) {}
+    ) {
+      this.dragulaService.drop.asObservable().takeUntil(this.destroy$).subscribe((value) => {
+        this.onDrop(value.slice(1));
+      });
+    }
 
     ngOnInit() {
       this.iterationQuery.deselectAllIteration();
@@ -149,6 +157,7 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
     }
 
     ngOnDestroy() {
+      this.destroy$.next();
       this.eventListeners.forEach(e => e.unsubscribe());
     }
 
@@ -170,5 +179,29 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
       setTimeout(() => {
         this.sidePanelOpen = event === 'out';
       }, 200);
+    }
+    onDrop(args) {
+      const [el, target, source, sibling] = args;
+      let direction;
+      let destinationWorkItemID;
+      if (sibling === null && el.previousElementSibling !== null) {
+        direction = 'below';
+        destinationWorkItemID = el.previousElementSibling.children[0].getAttribute('data-id');
+        console.log(el.previousElementSibling, '####-1');
+      } else if (sibling !== null) {
+        direction = 'above';
+        destinationWorkItemID = sibling.children[0].getAttribute('data-id');
+      } else if (sibling === null && el.previousElementSibling === null) {
+        // no reorder action dispatch only update action will dispatch
+      }
+      console.log(el.previousElementSibling, '####-1');
+      const payload = {
+        workItem: el.children[0].getAttribute('data-id'),
+        destinationWorkItemID: destinationWorkItemID,
+        direction: direction
+      };
+      console.log(el.children[0].getAttribute('data-id'), '####-34');
+      console.log(destinationWorkItemID, '####-35');
+      console.log(direction, '####-36');
     }
 }
