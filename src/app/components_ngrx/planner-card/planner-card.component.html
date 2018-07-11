@@ -1,4 +1,4 @@
-<div class="f8-custom-card" (click)="cardClick(workItem, $event);">
+<div class="f8-custom-card" (click)="cardClick(workItem, $event);" [attr.data-id]="workItem.id">
   <pfng-card [config]="config" [headerTemplate]="cardHeader">
     <ng-template #cardHeader>
       <div class="f8-custom-card-header">
@@ -6,9 +6,9 @@
           <span class="fa fa-bullseye"></span>
         </div>
         <div class="title-wrapper" (click)="titleClick(workItem, $event);">
-          <span>{{ workItem.number }}: </span>
-          <strong>{{ workItem.title }}</strong>
-          <span class="creator"> - created by {{ (workItem.creatorObs | async).username }}</span>
+          <span>{{ workItem?.number }}: </span>
+          <strong>{{ workItem?.title }}</strong>
+          <span class="creator"> - created by {{ (workItem.creatorObs | async)?.username }}</span>
         </div>
       </div>
     </ng-template>

@@ -10,6 +10,8 @@ import {
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { sortBy } from 'lodash';
+import { DragulaService } from 'ng2-dragula';
+import { Subject } from 'rxjs';
 import { BoardQuery } from '../../models/board.model';
 import { AppState } from '../../states/app.state';
 import * as BoardActions from './../../actions/board.actions';
@@ -29,25 +31,29 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
     private sidePanelOpen: boolean = true;
     private eventListeners: any[] = [];
     private board$;
+    private columns;
+    private destroy$ = new Subject();
 
     constructor(
+      private dragulaService: DragulaService,
       private renderer: Renderer2,
       private spaceQuery: SpaceQuery,
       private groupTypeQuery: GroupTypeQuery,
       private iterationQuery: IterationQuery,
       private route: ActivatedRoute,
-      private router: Router,
       private store: Store<AppState>,
-      private boardQuery: BoardQuery
-    ) {}
+      private boardQuery: BoardQuery,
+      private router: Router
+    ) {
+      this.dragulaService.drop.asObservable().takeUntil(this.destroy$).subscribe((value) => {
+        this.onDrop(value.slice(1));
+      });
+    }
 
     ngOnInit() {
       this.iterationQuery.deselectAllIteration();
       this.eventListeners.push(
         this.spaceQuery.getCurrentSpace
-          .do(() => {
-            // this.uiLockedSidebar = true;
-          })
           .switchMap(() => {
             return this.groupTypeQuery.getFirstGroupType;
           }).take(1)
@@ -58,6 +64,73 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
           })
           .subscribe()
       );
+
+      this.columns = [{
+        name: 'New',
+        count: 3,
+        id: '1',
+        workItems: [{
+          id: '1',
+          title: 'Work Item 1',
+          number: 1,
+          iteration: 'Sprint #1'
+        }, {
+          id: '2',
+          title: 'Work Item 2',
+          number: 2,
+          iteration: 'Sprint #2'
+        }, {
+          id: '3',
+          title: 'Work Item 3',
+          number: 3,
+          iteration: 'Sprint #3'
+        }]
+      }, {
+        name: 'Open',
+        count: 2,
+        id: '2',
+        workItems: [{
+          id: '4',
+          title: 'Work Item 4',
+          number: 4,
+          iteration: 'Sprint #4'
+        }, {
+          id: '5',
+          title: 'Work Item 5',
+          number: 5,
+          iteration: 'Sprint #5'
+        }]
+      }, {
+        name: 'InProgress',
+        count: 2,
+        id: '3',
+        workItems: [{
+          id: '6',
+          title: 'Work Item 6',
+          number: 6,
+          iteration: 'Sprint #6'
+        }, {
+          id: '7',
+          title: 'Work Item 7',
+          number: 7,
+          iteration: 'Sprint #7'
+        }]
+      }, {
+        name: 'Resolved',
+        count: 2,
+        id: '4',
+        workItems: [{
+          id: '8',
+          title: 'Work Item 8',
+          number: 8,
+          iteration: 'Sprint #8'
+        }, {
+          id: '9',
+          title: 'Work Item 9',
+          number: 9,
+          iteration: 'Sprint #9'
+        }]
+      }];
     }
 
     setDefaultUrl(groupType: GroupTypeUI) {
@@ -94,6 +167,7 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
     }
 
     ngOnDestroy() {
+      this.destroy$.next();
       this.eventListeners.forEach(e => e.unsubscribe());
     }
 
@@ -115,5 +189,29 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
       setTimeout(() => {
         this.sidePanelOpen = event === 'out';
       }, 200);
+    }
+    onDrop(args) {
+      const [el, target, source, sibling] = args;
+      let direction;
+      let destinationWorkItemID;
+      if (sibling === null && el.previousElementSibling !== null) {
+        direction = 'below';
+        destinationWorkItemID = el.previousElementSibling.children[0].getAttribute('data-id');
+        console.log(el.previousElementSibling, '####-1');
+      } else if (sibling !== null) {
+        direction = 'above';
+        destinationWorkItemID = sibling.children[0].getAttribute('data-id');
+      } else if (sibling === null && el.previousElementSibling === null) {
+        // no reorder action dispatch only update action will dispatch
+      }
+      console.log(el.previousElementSibling, '####-1');
+      const payload = {
+        workItem: el.children[0].getAttribute('data-id'),
+        destinationWorkItemID: destinationWorkItemID,
+        direction: direction
+      };
+      console.log(el.children[0].getAttribute('data-id'), '####-34');
+      console.log(destinationWorkItemID, '####-35');
+      console.log(direction, '####-36');
     }
 }

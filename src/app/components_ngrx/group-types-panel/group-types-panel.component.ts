@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
@@ -24,7 +24,7 @@ import { AppState } from './../../states/app.state';
 export class GroupTypesComponent implements OnInit, OnDestroy {
 
   @Input() sidePanelOpen: boolean = true;
-  @Input() context: string; // 'list' or 'board'
+  @Input() context: 'list' | 'board'; // 'list' or 'board'
 
   authUser: any = null;
   infotipSource = this.store
@@ -44,6 +44,7 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     private filterService: FilterService,
     private groupTypesService: GroupTypesService,
     private route: ActivatedRoute,
+    private router: Router,
     private spaces: Spaces,
     private store: Store<AppState>
   ) {}
@@ -170,5 +171,16 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
     return this.infotipSource
       .select(s => s[id])
       .select(i => i ? i['en'] : id);
+  }
+
+  //This function navigates to the desired work item group type page
+  groupTypeClickHandler(e: MouseEvent, item: GroupTypeUI) {
+    if (!e.srcElement.classList.contains('infotip-icon')) {
+      let q = this.addRemoveQueryParams(item);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: q
+      });
+    }
   }
 }

@@ -16,12 +16,14 @@ import {
 } from './../../states/index.state';
 import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { PlannerBoardColumnModule } from './../planner-board-column/planner-board-column.module';
+import { PlannerCardModule } from './../planner-card/planner-card.module';
 import { SidepanelModule } from './../side-panel/side-panel.module';
 import { WorkItemPreviewPanelModule } from './../work-item-preview-panel/work-item-preview-panel.module';
 import { PlannerBoardRoutingModule } from './planner-board-routing.module';
 import { PlannerBoardComponent } from './planner-board.component';
 
 // Data Querries
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { AreaQuery } from '../../models/area.model';
 import { BoardQuery, ColumnWorkItemQuery } from '../../models/board.model';
 import { GroupTypeQuery } from '../../models/group-types.model';
@@ -35,6 +37,7 @@ import { F8SortByPipeModule } from './../../pipes/sort-by.module';
 
 @NgModule({
   providers: [
+    DragulaService,
     TooltipConfig,
     BoardService,
     CommentQuery,
@@ -49,6 +52,8 @@ import { F8SortByPipeModule } from './../../pipes/sort-by.module';
     ColumnWorkItemQuery
   ],
   imports: [
+    PlannerCardModule,
+    DragulaModule,
     CommonModule,
     F8SortByPipeModule,
     PlannerBoardRoutingModule,
