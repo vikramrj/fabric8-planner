@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import * as SpaceActions from './../actions/space.actions';
 
 import * as AreaActions from './../actions/area.actions';
-import * as BoardActions from './../actions/board.actions';
+import * as BoardActions from  './../actions/board.actions';
 import * as CollaboratorActions from './../actions/collaborator.actions';
 import * as CustomQueryActions from './../actions/custom-query.actions';
 import * as FilterActions from './../actions/filter.actions';

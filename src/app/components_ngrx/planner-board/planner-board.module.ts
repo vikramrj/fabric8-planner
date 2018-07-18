@@ -1,19 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap';
-
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { TooltipConfig, TooltipModule } from 'ngx-bootstrap';
 import { BoardEffects } from '../../effects/board.effect';
-import {
-  BoardReducer,
-  ColumnWorkItemReducer
-} from '../../reducers/index.reducer';
+import { BoardReducer, ColumnWorkItemReducer } from '../../reducers/index.reducer';
 import { BoardService } from '../../services/board.service';
-import {
-  InitialBoardState,
-  InitialColumnWorkItemState
-} from './../../states/index.state';
+import { InitialBoardState, InitialColumnWorkItemState } from './../../states/index.state';
+
 import { PlannerLayoutModule } from './../../widgets/planner-layout/planner-layout.module';
 import { PlannerBoardColumnModule } from './../planner-board-column/planner-board-column.module';
 import { PlannerCardModule } from './../planner-card/planner-card.module';

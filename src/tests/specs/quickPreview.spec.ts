@@ -16,6 +16,7 @@ describe('Quick preview tests: ', () => {
 
   beforeEach(async () => {
     await planner.ready();
+    await planner.workItemList.overlay.untilHidden();
   });
 
   afterEach(async () => {
@@ -33,7 +34,6 @@ describe('Quick preview tests: ', () => {
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
     await planner.quickPreview.createNewLabel(c.newLabel);
-    await planner.quickPreview.notificationToast.untilHidden();
     expect(await planner.quickPreview.getLabels()).toContain(c.newLabel);
   });
 
@@ -43,14 +43,13 @@ describe('Quick preview tests: ', () => {
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
     await planner.quickPreview.createNewLabel(newLabel, true);
-    await planner.quickPreview.notificationToast.untilHidden();
     expect(await planner.quickPreview.getLabels()).toContain(newLabel);
   });
 
   it('should link a workitem', async () => {
     let workitemname = {'title': 'link test'},
       linkType = 'blocks',
-      searchWorkItem = '3-Workitem_Title_4',
+      searchWorkItem = '3 - Workitem_Title_4',
       workItemTitle17 = 'Workitem_Title_4';
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
@@ -63,7 +62,6 @@ describe('Quick preview tests: ', () => {
     let title = await planner.createUniqueWorkItem();
     await planner.workItemList.clickWorkItem(title);
     await planner.quickPreview.updateTitle(c.editWorkItemTitle1);
-    await planner.quickPreview.notificationToast.untilHidden();
     expect(await planner.quickPreview.titleInput.getAttribute('value')).toBe('Title Text "<0>"');
   });
 

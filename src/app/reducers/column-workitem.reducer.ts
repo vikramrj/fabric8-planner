@@ -15,16 +15,15 @@ export const ColumnWorkItemReducer: ActionReducer<ColumnWorkItemState> = (state 
             if (cwState.hasOwnProperty(col)) {
               cwState[col] = [...cwState[col], item.id];
             } else {
-              cwState[col] = [];
-              cwState[col] = [...cwState[col], item.id];
+              cwState[col] = [item.id];
             }
           });
         }
       });
       return {...cwState};
     }
-    default: {
-      return state;
+    default:  {
+      return {...state};
     }
   }
 };
